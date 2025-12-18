@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>Legendary Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .glass {
+      width: 400px;
+      padding: 40px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+      animation: fadeIn 0.8s ease;
+      position: relative;
+    }
+
+    .back {
+      position: absolute;
+      top: -35px;
+      right: 0;
+      font-size: 14px;
+      cursor: pointer;
+      color: #19C5B8;
+      display: none;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+      font-size: 28px;
+      background: linear-gradient(90deg, #3A7AFE, #19C5B8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.85;
+      margin-bottom: 25px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #3A7AFE, #19C5B8);
+      color: #fff;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(58, 122, 254, 0.4);
+    }
+
+    .switch {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .switch span {
+      color: #19C5B8;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 13px;
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="glass">
+    <div class="back" id="backBtn" onclick="toggleMode()">← العودة لتسجيل الدخول</div>
+
+    <h1 id="title">تسجيل الدخول</h1>
+    <p id="subtitle">مرحبًا بعودتك إلى المستقبل</p>
+
+    <!-- Register Only -->
+    <div class="input-group" id="nameGroup" style="display:none;">
+      <input type="text" id="fullName" placeholder="الاسم الكامل">
+    </div>
+
+    <div class="input-group">
+      <input type="email" id="email" placeholder="البريد الإلكتروني">
+    </div>
+
+    <div class="input-group" id="phoneGroup" style="display:none;">
+      <input type="tel" id="phone" placeholder="رقم الهاتف">
+    </div>
+
+    <div class="input-group">
+      <input type="password" id="password" placeholder="كلمة المرور">
+    </div>
+
+    <div class="input-group" id="confirmGroup" style="display:none;">
+      <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور">
+    </div>
+
+    <button onclick="handleAuth()" id="actionBtn">دخول</button>
+
+    <div class="switch">
+      <span onclick="toggleMode()" id="switchText">إنشاء حساب جديد</span>
+    </div>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    let isLogin = true;
+
+    function toggleMode() {
+      isLogin = !isLogin;
+
+      document.getElementById("title").innerText =
+        isLogin ? "تسجيل الدخول" : "إنشاء حساب";
+
+      document.getElementById("subtitle").innerText =
+        isLogin ? "مرحبًا بعودتك إلى المستقبل" : "ابدأ رحلتك الأسطورية معنا";
+
+      document.getElementById("actionBtn").innerText =
+        isLogin ? "دخول" : "إنشاء الحساب";
+
+      document.getElementById("switchText").innerText =
+        isLogin ? "إنشاء حساب جديد" : "لديك حساب؟ تسجيل الدخول";
+
+      document.getElementById("nameGroup").style.display = isLogin ? "none" : "block";
+      document.getElementById("phoneGroup").style.display = isLogin ? "none" : "block";
+      document.getElementById("confirmGroup").style.display = isLogin ? "none" : "block";
+      document.getElementById("backBtn").style.display = isLogin ? "none" : "block";
+
+      document.getElementById("message").style.display = "none";
+    }
+
+    function showMessage(text, success = false) {
+      const msg = document.getElementById("message");
+      msg.style.color = success ? "#9cffc7" : "#ffb3b3";
+      msg.innerText = text;
+      msg.style.display = "block";
+    }
+
+    function handleAuth() {
+      if (!isLogin) {
+        const fullName = document.getElementById("fullName").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (!fullName || !email || !phone || !password || !confirmPassword) {
+          showMessage("يرجى تعبئة جميع الحقول");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showMessage("كلمتا المرور غير متطابقتين");
+          return;
+        }
+
+        localStorage.setItem("student", JSON.stringify({
+          fullName,
+          email,
+          phone,
+          password
+        }));
+
+        showMessage("تم إنشاء الحساب بنجاح ✨", true);
+        setTimeout(toggleMode, 1200);
+        return;
+      }
+
+      // Login
+      const loginEmail = document.getElementById("email").value.trim();
+      const loginPassword = document.getElementById("password").value;
+      const saved = JSON.parse(localStorage.getItem("student"));
+
+      if (!saved) {
+        showMessage("لا يوجد حساب، يرجى إنشاء حساب أولًا");
+        return;
+      }
+
+      if (loginEmail !== saved.email || loginPassword !== saved.password) {
+        showMessage("بيانات الدخول غير صحيحة");
+        return;
+      }
+
+      showMessage("تم تسجيل الدخول بنجاح 🚀", true);
+
+      setTimeout(() => {
+        window.location.href = "ProfilePage.html";
+      }, 1200);
+    }
+  </script>
+
+</body>
+</html>

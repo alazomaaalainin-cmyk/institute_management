@@ -1,0 +1,294 @@
+<!-- <!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+    body{
+      min-height:100vh;
+      background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+      display:flex;align-items:center;justify-content:center;color:#fff
+    }
+    .container{
+      width:620px;background:rgba(255,255,255,.07);
+      backdrop-filter:blur(22px);border-radius:24px;
+      padding:45px;box-shadow:0 30px 60px rgba(0,0,0,.45)
+    }
+    .header h1{
+      font-size:28px;
+      background:linear-gradient(90deg,#3A7AFE,#19C5B8);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent
+    }
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:25px}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field.full{grid-column:span 2}
+    input,select{
+      padding:14px;border-radius:14px;border:none;
+      background:rgba(255,255,255,.14);color:#fff
+    }
+    option{color:#000}
+    .hidden{display:none}
+    button{
+      margin-top:30px;padding:14px 36px;border-radius:18px;
+      background:linear-gradient(135deg,#3A7AFE,#19C5B8);
+      border:none;color:#fff;font-weight:600;cursor:pointer
+    }
+    .message{margin-top:15px;font-size:13px;display:none}
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <div class="header">
+    <h1>الملف الشخصي للطالب</h1>
+  </div>
+
+  <div class="form-grid">
+    <div class="field full">
+      <label>الاسم الكامل</label>
+      <input id="fullname">
+    </div>
+
+    <div class="field">
+      <label>الجنس</label>
+      <select id="gender">
+        <option value="">اختر</option>
+        <option>ذكر</option>
+        <option>أنثى</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>رقم الهاتف</label>
+      <input id="phone">
+    </div>
+
+    <div class="field">
+      <label>الصف الدراسي</label>
+      <select id="grade" onchange="toggleMajor()">
+        <option value="">اختر</option>
+        <option value="9">التاسع</option>
+        <option value="12">الثاني عشر</option>
+      </select>
+    </div>
+
+    <div class="field hidden" id="majorField">
+      <label>التخصص</label>
+      <select id="major">
+        <option value="">اختر</option>
+        <option value="علمي">علمي</option>
+        <option value="أدبي">أدبي</option>
+      </select>
+    </div>
+  </div>
+
+  <button onclick="saveProfile()">حفظ والمتابعة</button>
+  <div class="message" id="message"></div>
+</div>
+
+<script>
+function toggleMajor(){
+  const grade=document.getElementById("grade").value;
+  document.getElementById("majorField").classList.toggle("hidden",grade!=="12");
+}
+
+function saveProfile(){
+  const grade=gradeInput=document.getElementById("grade").value;
+  const major=document.getElementById("major").value;
+  const msg=document.getElementById("message");
+
+  if(!grade || (grade==="12" && !major)){
+    msg.style.display="block";
+    msg.style.color="#ffb3b3";
+    msg.innerText="يرجى تعبئة البيانات المطلوبة";
+    return;
+  }
+
+  localStorage.setItem("grade",grade);
+  localStorage.setItem("major",major);
+
+  msg.style.display="block";
+  msg.style.color="#9cffc7";
+  msg.innerText="تم الحفظ بنجاح ✨";
+
+  setTimeout(()=>location.href="SubjectsPage.html",1000);
+}
+</script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+    body{
+      min-height:100vh;
+      background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+      display:flex;align-items:center;justify-content:center;color:#fff
+    }
+
+    .container{
+      position:relative; /* مهم */
+      width:620px;background:rgba(255,255,255,.07);
+      backdrop-filter:blur(22px);border-radius:24px;
+      padding:45px;box-shadow:0 30px 60px rgba(0,0,0,.45)
+    }
+
+    /* زر العودة داخل البطاقة */
+    .back-wrapper{
+      position:absolute;
+      top:20px;
+      left:20px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:#19C5B8;
+      font-size:15px;
+      cursor:pointer;
+      opacity:.9;
+    }
+    .back-wrapper:hover{opacity:1}
+    .back-wrapper .arrow{font-size:20px}
+
+    .header h1{
+      font-size:28px;
+      background:linear-gradient(90deg,#3A7AFE,#19C5B8);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:22px;
+      margin-top:35px;
+    }
+
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field.full{grid-column:span 2}
+
+    input,select{
+      padding:14px;border-radius:14px;border:none;
+      background:rgba(255,255,255,.14);color:#fff
+    }
+    option{color:#000}
+
+    .hidden{display:none}
+
+    button{
+      margin-top:30px;
+      padding:14px 36px;
+      border-radius:18px;
+      background:linear-gradient(135deg,#3A7AFE,#19C5B8);
+      border:none;color:#fff;font-weight:600;cursor:pointer
+    }
+
+    .message{
+      margin-top:15px;
+      font-size:13px;
+      display:none
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- العودة لتسجيل الدخول (داخل البطاقة) -->
+  <div class="back-wrapper" onclick="location.href='login.html'">
+    <span class="arrow">←</span>
+    <span>العودة لتسجيل الدخول</span>
+  </div>
+
+  <div class="header">
+    <h1>الملف الشخصي للطالب</h1>
+  </div>
+
+  <div class="form-grid">
+    <div class="field full">
+      <label>الاسم الكامل</label>
+      <input id="fullname">
+    </div>
+
+    <div class="field">
+      <label>الجنس</label>
+      <select id="gender">
+        <option value="">اختر</option>
+        <option>ذكر</option>
+        <option>أنثى</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>رقم الهاتف</label>
+      <input id="phone">
+    </div>
+
+    <div class="field">
+      <label>الصف الدراسي</label>
+      <select id="grade" onchange="toggleMajor()">
+        <option value="">اختر</option>
+        <option value="9">التاسع</option>
+        <option value="12">الثاني عشر</option>
+      </select>
+    </div>
+
+    <div class="field hidden" id="majorField">
+      <label>التخصص</label>
+      <select id="major">
+        <option value="">اختر</option>
+        <option value="علمي">علمي</option>
+        <option value="أدبي">أدبي</option>
+      </select>
+    </div>
+  </div>
+
+  <button onclick="saveProfile()">حفظ والمتابعة</button>
+  <div class="message" id="message"></div>
+
+</div>
+
+<script>
+function toggleMajor(){
+  const grade=document.getElementById("grade").value;
+  document.getElementById("majorField").classList.toggle("hidden",grade!=="12");
+}
+
+function saveProfile(){
+  const grade=document.getElementById("grade").value;
+  const major=document.getElementById("major").value;
+  const msg=document.getElementById("message");
+
+  if(!grade || (grade==="12" && !major)){
+    msg.style.display="block";
+    msg.style.color="#ffb3b3";
+    msg.innerText="يرجى تعبئة البيانات المطلوبة";
+    return;
+  }
+
+  localStorage.setItem("grade",grade);
+  localStorage.setItem("major",major);
+
+  msg.style.display="block";
+  msg.style.color="#9cffc7";
+  msg.innerText="تم الحفظ بنجاح ✨";
+
+  setTimeout(()=>location.href="SubjectsPage.html",1000);
+}
+</script>
+
+</body>
+</html>
+
+

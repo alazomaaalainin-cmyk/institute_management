@@ -1,0 +1,362 @@
+<!-- <!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>تقييم المعلمين</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+}
+
+.container{
+  width:95%;
+  max-width:850px;
+  background:rgba(255,255,255,.07);
+  backdrop-filter:blur(22px);
+  border-radius:26px;
+  padding:35px;
+  box-shadow:0 30px 60px rgba(0,0,0,.45);
+}
+
+h1{
+  text-align:center;
+  font-size:28px;
+  margin-bottom:10px;
+  background:linear-gradient(90deg,#3A7AFE,#19C5B8);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+  text-align:center;
+  font-size:14px;
+  opacity:.85;
+  margin-bottom:25px;
+}
+
+.card{
+  background:rgba(255,255,255,.08);
+  border-radius:22px;
+  padding:22px;
+  margin-bottom:20px;
+  border:1px solid rgba(25,197,184,.35);
+}
+
+.card h2{
+  font-size:17px;
+  margin-bottom:14px;
+}
+
+.stars{
+  font-size:26px;
+  margin-bottom:12px;
+}
+
+.star{
+  cursor:pointer;
+  margin-right:6px;
+  color:#6b7280;
+  transition:.3s;
+}
+
+.star.active{
+  color:#19C5B8;
+}
+
+textarea{
+  width:100%;
+  min-height:90px;
+  border-radius:16px;
+  background:rgba(255,255,255,.12);
+  border:none;
+  padding:14px;
+  color:#fff;
+  outline:none;
+  resize:none;
+}
+
+.footer{
+  margin-top:25px;
+  display:flex;
+  justify-content:space-between;
+}
+
+button{
+  padding:14px 34px;
+  border-radius:20px;
+  border:none;
+  background:linear-gradient(135deg,#3A7AFE,#19C5B8);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>تقييم المعلمين</h1>
+  <div class="subtitle">
+    يرجى تقييم معلميك بعد الانتهاء من الدورة، رأيك يهمنا
+  </div>
+
+  <div id="ratings"></div>
+
+  <div class="footer">
+    <button onclick="back()">← العودة</button>
+    <button onclick="save()">إرسال التقييم</button>
+  </div>
+</div>
+
+<script>
+const data = JSON.parse(localStorage.getItem("scheduleData")) || [];
+const saved = JSON.parse(localStorage.getItem("teacherRatings")) || {};
+const container = document.getElementById("ratings");
+
+data.forEach(item=>{
+  const div=document.createElement("div");
+  div.className="card";
+
+  div.innerHTML=`
+    <h2>${item.subject} - ${item.teacher}</h2>
+
+    <div class="stars" data-subject="${item.subject}">
+      ${[1,2,3,4,5].map(n=>`
+        <span class="star ${saved[item.subject]?.stars>=n?"active":""}"
+          onclick="rate('${item.subject}',${n})">★</span>
+      `).join("")}
+    </div>
+
+    <textarea
+      placeholder="تعليقك (اختياري)"
+      oninput="comment('${item.subject}',this.value)"
+    >${saved[item.subject]?.comment||""}</textarea>
+  `;
+
+  container.appendChild(div);
+});
+
+function rate(subject,value){
+  saved[subject]=saved[subject]||{};
+  saved[subject].stars=value;
+  refresh();
+}
+
+function comment(subject,text){
+  saved[subject]=saved[subject]||{};
+  saved[subject].comment=text;
+}
+
+function refresh(){
+  localStorage.setItem("teacherRatings",JSON.stringify(saved));
+  location.reload();
+}
+
+function save(){
+  localStorage.setItem("teacherRatings",JSON.stringify(saved));
+  alert("تم إرسال التقييم ✔️");
+}
+
+function back(){
+  location.href="StudentDashboard.html";
+}
+</script>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>تقييم المعلمين</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+}
+
+.container{
+  width:95%;
+  max-width:850px;
+  background:rgba(255,255,255,.07);
+  backdrop-filter:blur(22px);
+  border-radius:26px;
+  padding:35px;
+  box-shadow:0 30px 60px rgba(0,0,0,.45);
+}
+
+h1{
+  text-align:center;
+  font-size:28px;
+  margin-bottom:10px;
+  background:linear-gradient(90deg,#3A7AFE,#19C5B8);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+  text-align:center;
+  font-size:14px;
+  opacity:.85;
+  margin-bottom:25px;
+}
+
+.card{
+  background:rgba(255,255,255,.08);
+  border-radius:22px;
+  padding:22px;
+  margin-bottom:20px;
+  border:1px solid rgba(25,197,184,.35);
+}
+
+.card h2{
+  font-size:17px;
+  margin-bottom:14px;
+}
+
+.stars{
+  font-size:26px;
+  margin-bottom:12px;
+}
+
+.star{
+  cursor:pointer;
+  margin-right:6px;
+  color:#6b7280;
+  transition:.3s;
+}
+
+.star.active{
+  color:#19C5B8;
+}
+
+textarea{
+  width:100%;
+  min-height:90px;
+  border-radius:16px;
+  background:rgba(255,255,255,.12);
+  border:none;
+  padding:14px;
+  color:#fff;
+  outline:none;
+  resize:none;
+}
+
+.footer{
+  margin-top:25px;
+  display:flex;
+  justify-content:space-between;
+}
+
+button{
+  padding:14px 34px;
+  border-radius:20px;
+  border:none;
+  background:linear-gradient(135deg,#3A7AFE,#19C5B8);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>تقييم المعلمين</h1>
+  <div class="subtitle">
+    يرجى تقييم معلميك بعد الانتهاء من الدورة، رأيك يهمنا
+  </div>
+
+  <div id="ratings"></div>
+
+  <div class="footer">
+    <button onclick="back()">← العودة</button>
+  </div>
+</div>
+
+<script>
+const data = JSON.parse(localStorage.getItem("scheduleData")) || [];
+const saved = JSON.parse(localStorage.getItem("teacherRatings")) || {};
+const container = document.getElementById("ratings");
+
+data.forEach(item=>{
+  const div=document.createElement("div");
+  div.className="card";
+
+  div.innerHTML=`
+    <h2>${item.subject} - ${item.teacher}</h2>
+
+    <div class="stars" data-subject="${item.subject}">
+      ${[1,2,3,4,5].map(n=>`
+        <span class="star ${saved[item.subject]?.stars>=n?"active":""}"
+          onclick="rate('${item.subject}',${n})">★</span>
+      `).join("")}
+    </div>
+
+    <textarea
+      placeholder="تعليقك (اختياري)"
+      oninput="comment('${item.subject}',this.value)"
+    >${saved[item.subject]?.comment||""}</textarea>
+
+    <button style="margin-top:14px;width:100%"
+            onclick="saveOne('${item.subject}')">
+      إرسال التقييم
+    </button>
+  `;
+
+  container.appendChild(div);
+});
+
+function rate(subject,value){
+  saved[subject]=saved[subject]||{};
+  saved[subject].stars=value;
+  refresh();
+}
+
+function comment(subject,text){
+  saved[subject]=saved[subject]||{};
+  saved[subject].comment=text;
+}
+
+function refresh(){
+  localStorage.setItem("teacherRatings",JSON.stringify(saved));
+  location.reload();
+}
+
+function saveOne(subject){
+  if(!saved[subject] || !saved[subject].stars){
+    alert("يرجى اختيار عدد النجوم ⭐");
+    return;
+  }
+  localStorage.setItem("teacherRatings",JSON.stringify(saved));
+  alert(`تم إرسال تقييم ${subject} ✔️`);
+}
+
+function back(){
+  location.href="StudentDashboard.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>اختيار المواد</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  display:flex;align-items:center;justify-content:center;color:#fff
+}
+.container{
+  width:720px;background:rgba(255,255,255,.07);
+  backdrop-filter:blur(22px);border-radius:24px;
+  padding:45px;box-shadow:0 30px 60px rgba(0,0,0,.45)
+}
+.back span{
+  cursor:pointer;color:#19C5B8;font-size:14px
+}
+.subject{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:15px;margin-bottom:15px
+}
+select{
+  padding:12px;border-radius:14px;
+  background:rgba(255,255,255,.14);color:#fff;border:none
+}
+option{color:#000}
+button{
+  margin-top:25px;padding:14px 36px;border-radius:18px;
+  background:linear-gradient(135deg,#3A7AFE,#19C5B8);
+  border:none;color:#fff;font-weight:600;cursor:pointer
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+  <div class="back">
+    <span onclick="goBack()">← العودة إلى الملف الشخصي</span>
+  </div>
+
+  <h1 style="text-align:center;margin-bottom:25px">اختيار المواد</h1>
+
+  <div id="subjectsList"></div>
+
+  <button onclick="next()">المتابعة</button>
+</div>
+
+<script>
+const grade = localStorage.getItem("grade");
+const major = localStorage.getItem("major");
+
+/* المواد */
+const subjectsMap = {
+  "9":[
+    "وطنية","عربي","لغة","فرنسي","ديانة","علوم",
+    "رياضيات","جغرافية","تاريخ","فيزياء","كيمياء"
+  ],
+  "12":{
+    "علمي":[
+      "وطنية","عربي","رياضيات","فيزياء",
+      "كيمياء","علوم","ديانة","لغة","فرنسي"
+    ],
+    "أدبي":[
+      "عربي","لغة","فرنسي","ديانة",
+      "فلسفة","وطنية","جغرافية"
+    ]
+  }
+};
+
+/* الأساتذة */
+const teachersMap = {
+  "9":{
+    "وطنية":["عمير شحيدة","خلود العبدالله"],
+    "عربي":["منى القاسم","محمود مجحود"],
+    "لغة":["كوثر العمر","محمد المحمد"],
+    "فرنسي":["روعة الوادي","صفاء العمر"],
+    "ديانة":["اسلام المحمد","براءة قبش"],
+    "علوم":["عبدالله الحسن","ابراهيم العمر"],
+    "رياضيات":["بسمة الحريري","حسين العيد"],
+    "جغرافية":["علي الحمد"],
+    "تاريخ":["عمر العمر","حسن الحسن"],
+    "فيزياء":["جيداء الحسن","حسام القاسم"],
+    "كيمياء":["هدى المنصور","علياء حزوري"]
+  },
+
+  "12":{
+    "علمي":{
+      "وطنية":["براء الغالب","سمية محمد"],
+      "عربي":["مناف السعيد","اسامة الأحمد"],
+      "رياضيات":["نائل خلف","سقراط بحو"],
+      "فيزياء":["جلال شحادة","خالد الرجب"],
+      "كيمياء":["أيمن نبهان","اميرة الأحمد"],
+      "علوم":["مصطفى رمضان","خالد الشومل"],
+      "ديانة":["حسناء الخالد","عبادة الخميس"],
+      "لغة":["حسن الحسن","حمادة الاحمد"],
+      "فرنسي":["مهيار العامر","ديلير برو"]
+    },
+    "أدبي":{
+      "عربي":["مناف السعيد","اسامة الأحمد"],
+      "لغة":["حسن الحسن","حمادة الأحمد"],
+      "فرنسي":["مهيار العامر","ديلير برو"],
+      "ديانة":["حسناء الخالد","عبادة الخميس"],
+      "فلسفة":["ريم العبدالله","ريان شحادة"],
+      "وطنية":["براء الغالب","سمية محمد"],
+      "جغرافية":["منهل المحمد","عمر القصير"]
+    }
+  }
+};
+
+/* تحديد المواد */
+let subjects=[];
+if(grade==="9") subjects=subjectsMap["9"];
+if(grade==="12") subjects=subjectsMap["12"][major];
+
+const container=document.getElementById("subjectsList");
+
+/* بناء الصفحة */
+subjects.forEach(subject=>{
+  let teachers=[];
+  if(grade==="9") teachers=teachersMap["9"][subject] || [];
+  if(grade==="12") teachers=teachersMap["12"][major][subject] || [];
+
+  const div=document.createElement("div");
+  div.className="subject";
+  div.innerHTML=`
+    <span>${subject}</span>
+    <select data-subject="${subject}">
+      <option value="">اختر المدرّس</option>
+      ${teachers.map(t=>`<option value="${t}">${t}</option>`).join("")}
+    </select>
+  `;
+  container.appendChild(div);
+});
+
+function next(){
+  const data=[];
+  document.querySelectorAll("select").forEach(select=>{
+    if(select.value){
+      data.push({
+        subject: select.dataset.subject,
+        teacher: select.value
+      });
+    }
+  });
+
+  if(data.length===0){
+    alert("اختر على الأقل مادة واحدة");
+    return;
+  }
+
+  localStorage.setItem("scheduleData", JSON.stringify(data));
+  location.href="StudentDashboard.html";
+}
+
+function goBack(){
+  location.href="ProfilePage.html";
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>لوحة معلومات الطالب</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+}
+
+.container{
+  width:95%;
+  max-width:900px;
+  background:rgba(255,255,255,.07);
+  backdrop-filter:blur(22px);
+  border-radius:24px;
+  padding:35px;
+  box-shadow:0 30px 60px rgba(0,0,0,.45);
+}
+
+h1{
+  text-align:center;
+  margin-bottom:25px;
+  font-size:26px;
+  background:linear-gradient(90deg,#3A7AFE,#19C5B8);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+/* ملخص */
+.summary{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.summary-box{
+  background:rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:18px;
+  text-align:center;
+}
+
+.summary-box h3{
+  font-size:14px;
+  opacity:.8;
+  margin-bottom:8px;
+}
+
+.summary-box span{
+  font-size:26px;
+  font-weight:600;
+  color:#19C5B8;
+}
+
+/* بطاقة */
+.card{
+  background:rgba(255,255,255,.08);
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:18px;
+  border-left:4px solid #19C5B8;
+}
+
+.card h2{
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+.card p{
+  font-size:13px;
+  opacity:.8;
+  margin-bottom:15px;
+}
+
+/* شريط التقدم */
+.progress-label{
+  font-size:13px;
+  margin-bottom:6px;
+}
+
+.progress{
+  width:100%;
+  height:10px;
+  background:rgba(255,255,255,.2);
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:12px;
+}
+
+.progress span{
+  display:block;
+  height:100%;
+  background:linear-gradient(135deg,#3A7AFE,#19C5B8);
+}
+
+/* أزرار */
+.footer{
+  margin-top:25px;
+  display:flex;
+  justify-content:space-between;
+}
+
+button{
+  padding:14px 30px;
+  border-radius:18px;
+  border:none;
+  background:linear-gradient(135deg,#3A7AFE,#19C5B8);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>سجلات المواد والتحليل</h1>
+
+  <!-- ملخص -->
+  <div class="summary">
+    <div class="summary-box">
+      <h3>عدد المواد المسجّلة</h3>
+      <span id="subjectsCount">0</span>
+    </div>
+    <div class="summary-box">
+      <h3>المعدل التراكمي</h3>
+      <span id="gpa">0%</span>
+    </div>
+  </div>
+
+  <div id="cards"></div>
+
+  <div class="footer">
+    <button onclick="goBack()">← تعديل المواد</button>
+    <button onclick="goToRating()">تقييم المعلمين ⭐</button>
+  </div>
+</div>
+
+<script>
+const data = JSON.parse(localStorage.getItem("scheduleData")) || [];
+const stats = JSON.parse(localStorage.getItem("studentStats")) || {};
+const container = document.getElementById("cards");
+
+function random(min,max){
+  return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+let totalGrades = 0;
+
+/* إنشاء البطاقات */
+data.forEach(item=>{
+  if(!stats[item.subject]){
+    stats[item.subject]={
+      grade: random(70,100),
+      attendance: random(80,100)
+    };
+  }
+
+  const grade=stats[item.subject].grade;
+  const attendance=stats[item.subject].attendance;
+
+  totalGrades += grade;
+
+  const card=document.createElement("div");
+  card.className="card";
+  card.innerHTML=`
+    <h2>${item.subject}</h2>
+    <p>المعلم: ${item.teacher}</p>
+
+    <div class="progress-label">تحليل الدرجات: ${grade}%</div>
+    <div class="progress">
+      <span style="width:${grade}%"></span>
+    </div>
+
+    <div class="progress-label">سجل الحضور: ${attendance}%</div>
+    <div class="progress">
+      <span style="width:${attendance}%"></span>
+    </div>
+  `;
+  container.appendChild(card);
+});
+
+/* حساب الملخص */
+const subjectsCount = data.length;
+const gpa = subjectsCount ? Math.round(totalGrades / subjectsCount) : 0;
+
+document.getElementById("subjectsCount").textContent = subjectsCount;
+document.getElementById("gpa").textContent = gpa + "%";
+
+localStorage.setItem("studentStats",JSON.stringify(stats));
+
+function goBack(){
+  location.href="SubjectsPage.html";
+}
+
+/* الربط مع صفحة التقييم */
+function goToRating(){
+  location.href="RatingPage.html";
+}
+</script>
+
+</body>
+</html>
