@@ -8,6 +8,11 @@ router.post('/add', attendanceController.addAttendance);
 
 router.get('/', attendanceController.getAllAttendance);
 router.get('/:id', attendanceController.getAttendanceById);
+
+// الحصول على نسبة الحضور للطالب
+router.get('/:studentId', attendanceController.getAttendancePercentage);
+
+module.exports = router;
 router.put('/:id', attendanceController.updateAttendance);
 router.delete('/:id', attendanceController.deleteAttendance);
 
