@@ -1,4 +1,5 @@
 const SubTeachAssignment = require('../models/SubTeachAssignment');
+const Grade = require('../models/Grade');
 
 // إضافة اختيار طالب للاستاذ
 exports.addSubTeachAssignment = async (req, res) => {
@@ -18,17 +19,22 @@ exports.getAllSubTeachAssignment= async (req, res) => {
     try {
         const saveubTeachAssignment = await SubTeachAssignment.find();
         res.json(subTeachAssignment);
-    } catch (err) {
+    } catch (err) {c
         res.status(500).json({ error: err.message });
     }
 };
 
-// جلب الاختيار حسب ID
+// جلب عدد الموادوالمدرسين على حسب الختيار
 exports.getSubTeachAssignmentById = async (req, res) => {
     try {
-        const subTeachAssignment = await SubTeachAssignment.findById(req.params.id);
-        if (!subTeachAssignment) return res.status(404).json({ message: 'SubTeachAssignment not found' });
-        res.json(subTeachAssignment);
+        const studentSubjects = await SubTeachAssignment.find(req.params.student_id).populate( 'student_id teacher_id');
+        
+        const countsubject=studentSubjects.length;
+
+        if(countsubject===0){
+            return res.status(400).json({message:'لم يتم اختيار المادة'})
+        }
+        res.json(studentSubjects);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

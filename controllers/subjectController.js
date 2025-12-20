@@ -2,9 +2,9 @@ const Subject = require('../models/Subject');
 
 // إضافة مادة
 exports.addSubject = async (req, res) => {
-  const { name, description, level } = req.body;
+  const { name, totalmarks, level } = req.body;
 try {
-    const subject = new Subject({ name, description, level });
+    const subject = new Subject({ name, totalmarks, level });
     await subject.save();
     res.status(201).json({ message: 'Subject added successfully' });
   } catch (err) {
