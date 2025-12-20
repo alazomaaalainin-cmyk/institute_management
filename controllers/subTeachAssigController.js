@@ -17,9 +17,9 @@ try {
 //  جلب جميع الاختيارات 
 exports.getAllSubTeachAssignment= async (req, res) => {
     try {
-        const saveubTeachAssignment = await SubTeachAssignment.find();
+        const subTeachAssignment = await SubTeachAssignment.find();
         res.json(subTeachAssignment);
-    } catch (err) {c
+    } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
@@ -27,7 +27,7 @@ exports.getAllSubTeachAssignment= async (req, res) => {
 // جلب عدد الموادوالمدرسين على حسب الختيار
 exports.getSubTeachAssignmentById = async (req, res) => {
     try {
-        const studentSubjects = await SubTeachAssignment.find(req.params.student_id).populate( 'student_id teacher_id');
+        const studentSubjects = await SubTeachAssignment.find({student_id:req.params.studentId}).populate( 'student_id teacher_id');
         
         const countsubject=studentSubjects.length;
 

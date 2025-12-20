@@ -64,7 +64,7 @@ exports.getGradesAndSubjects = async (req, res) => {
 
   try {
     // الحصول على جميع المواد التي اختارها الطالب مع المدرس
-    const studentSubjects = await SubTeachAssignment.findOne( req.params.student_id )
+    const studentSubjects = await SubTeachAssignment.findOne( {student_id:req.params.studentId} )
       .populate('subject_id teacher_id');
 
     const subjectsCount = studentSubjects.length;
@@ -83,7 +83,7 @@ exports.getGradesAndSubjects = async (req, res) => {
       const teacher = studentSubject.teacher_id;
 
       // الحصول على الدرجات الخاصة بالطالب لهذه المادة (مع المدرس)
-      const grade = await Grade.findOne( subTeachAssignment_id );
+      const grade = await Grade.findOne({subTeachAssignment: studentSubject._id });
       if (grade) {
         const subjectMarks = subject.totalMarks;
         const marksObtained = grade.marksObtained;

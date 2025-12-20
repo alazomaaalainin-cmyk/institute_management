@@ -25,10 +25,10 @@ exports.getAllAttendance= async (req, res) => {
 // جلب حضور حسب ID
 exports.getAttendanceById = async (req, res) => {
     try {
-        const attendance = await Attendance.findById(req.params.studentId);
+        const attendance = await Attendance.findById(req.params.id);
         if (!attendance) return res.status(404).json({ message: 'Attendance not found' });
         res.json(attendance);
-    } catch (err) {
+    } catch (error) {
         res.status(500).json({ error: err.message });
     }
 };
