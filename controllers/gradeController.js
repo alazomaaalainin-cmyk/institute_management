@@ -119,3 +119,10 @@ exports.getGradesAndSubjects = async (req, res) => {
     return res.status(500).json({ message: 'خطأ في حساب الدرجات' });
   }
 };
+
+exports.getGradesForStudent = async (req, res) => {
+  const assignments = await SubTeachAssignment.find({ student_id: req.params.studentId });
+  const ids = assignments.map(a => a._id);
+  const grades = await Grade.find({ subTeachAssignment_id: { $in: ids } });
+  res.json(grades);
+};

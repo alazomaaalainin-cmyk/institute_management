@@ -1,6 +1,6 @@
 const express = require('express');
 const studentController = require('../controllers/studentController');
-//const authMiddleware = require('../middlewares/authMiddleware');
+const authMiddleware = require('../middlewares/authMiddleware');
 const authorizeMiddleware = require('../middlewares/authorizeMiddleware');
 const router = express.Router();
 
@@ -12,5 +12,7 @@ router.get('/', studentController.getAllStudent);
 router.get('/:id', studentController.getStudentById);
 router.put('/:id', studentController.updateStudent);
 router.delete('/:id', studentController.deleteStudent);
+router.get("/me",authMiddleware,studentController.getMe);
+router.put("/me",authMiddleware,studentController.updateMe);
 
 module.exports = router;

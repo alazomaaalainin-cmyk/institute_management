@@ -61,3 +61,22 @@ exports.deleteSubTeachAssignment = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+exports.getByStudent = async (req, res) => {
+  const assignments = await SubTeachAssignment.find({ student_id: req.params.studentId })
+    .populate("subject_id")
+    .populate("teacher_id");
+  res.json(assignments);
+};
+
+exports.rateTeacher = async (req, res) => {
+  const { rating, comments } = req.body;
+  const assignment = await SubTeachAssignment.findById(req.params.id);
+  if (!assignment) return res.status(404).json({ message: "غير موجود" });
+
+  assignment.rating = rating;
+  assignment.comments = comments;
+  await assignment.save();
+
+  res.json({ message: "تم حفظ التقييم" });
+};

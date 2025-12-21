@@ -66,3 +66,13 @@ exports.deleteStudent = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+//جلب وتعديل الطالب الحالي
+exports.getMe = async (req, res) => {
+  const student = await Student.findById(req.studentId).select("-password");
+  res.json(student);
+};
+
+exports.updateMe = async (req, res) => {
+  const student = await Student.findByIdAndUpdate(req.studentId, req.body, { new: true }).select("-password");
+  res.json(student);
+};

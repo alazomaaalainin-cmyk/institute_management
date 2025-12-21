@@ -1,4 +1,5 @@
 const Attendance = require('../models/Attendance');
+const SubTeachAssignment = require('../models/SubTeachAssignment');
 
 // إضافة حضور
 exports. addAttendance = async (req, res) => {
@@ -88,4 +89,10 @@ exports.deleteAttendance = async (req, res) => {
     }
 };
 
+exports.getAttendanceForStudent = async (req, res) => {
+  const assignments = await SubTeachAssignment.find({ student_id: req.params.studentId });
+  const ids = assignments.map(a => a._id);
+  const attendance = await Attendance.find({ subTeachAssignment_id: { $in: ids } });
+  res.json(attendance);
+};
 

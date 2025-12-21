@@ -4,7 +4,7 @@ const Teacher = require('../models/Teacher');
  
 const authMiddleware = async (req, res, next) => {
   
-  const token = req.header['authorization']?.split(' ')[1]; 
+  const token = req.headers["authorization"]?.split(" ")[1]; 
 
   if (!token) {
     return res.status(401).json({ message: 'Access Denied' });
